@@ -27,4 +27,37 @@
   $ terraform apply
   ```
   NB: This may take a few minutes to complete.
-* The master/control plane node and the worker nodes are ready.
+
+## Verification
+* To verify if the nodes are up and running, follow the steps below:
+* ssh to the master/control plane node
+  ```
+  $ ssh ubuntu@$(terraform output -raw instance_public_ip_master) -i ssh_keys -v
+  ```
+  NB: You can ssh to any worker node using the instance_public_ip_worker[*] - where [*] is the worker count.
+* You should now be connected to the master node.
+* run the following commands to ensure all nodes in the cluster are available, and all essential Kubernetes control plane components have been created:
+  ```
+  ubuntu@master-node:~$ kubectl get nodes
+  NAME            STATUS   ROLES           AGE   VERSION
+  master-node     Ready    control-plane   20m   v1.35.0
+  worker-node-1   Ready    <none>          19m   v1.35.0
+  worker-node-2   Ready    <none>          18m   v1.35.0
+  
+  ubuntu@master-node:~$ kubectl get pods -A
+  NAMESPACE     NAME                                  READY   STATUS    RESTARTS      AGE
+  kube-system   coredns-7d764666f9-5khcn              1/1     Running   0             21m
+  kube-system   coredns-7d764666f9-c8jnb              1/1     Running   0             21m
+  kube-system   etcd-master-node                      1/1     Running   0             21m
+  kube-system   kube-apiserver-master-node            1/1     Running   0             21m
+  kube-system   kube-controller-manager-master-node   1/1     Running   0             21m
+  kube-system   kube-proxy-4skfs                      1/1     Running   0             19m
+  kube-system   kube-proxy-5s7kn                      1/1     Running   0             21m
+  kube-system   kube-proxy-9qzp6                      1/1     Running   0             19m
+  kube-system   kube-scheduler-master-node            1/1     Running   0             21m
+  kube-system   weave-net-2fn5k                       2/2     Running   1 (19m ago)   19m
+  kube-system   weave-net-4gp7q                       2/2     Running   1 (21m ago)   21m
+  kube-system   weave-net-nm8lr                       2/2     Running   1 (19m ago)   19m
+
+  ```
+* The master/control plane node and the worker nodes are ready. 
