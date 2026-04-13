@@ -89,15 +89,3 @@ kubeadm config images pull --cri-socket unix:///var/run/cri-dockerd.sock
 echo "Initializing the Kubernetes cluster with kubeadm..."
 kubeadm init --cri-socket unix:///var/run/cri-dockerd.sock
 
-# set up kubeconfig for the regular user
-echo "Setting up kubeconfig for the regular user..."
-mkdir -p $HOME/.kube
-cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-chown $(id -u):$(id -g) $HOME/.kube/config
-
-# install a pod network add-on (Weave Net)
-echo "Installing Weave Net pod network add-on..."
-kubectl apply -f https://reweave.azurewebsites.net/k8s/v1.29/net.yaml
-
-#echo "Creating file with join command for worker nodes..."
-#echo `kubeadm token create --print-join-command` > ./join_command.sh
