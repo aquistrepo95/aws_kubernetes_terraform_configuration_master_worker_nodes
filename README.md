@@ -12,6 +12,7 @@
 * Docker: Docker engine, Docker CRI(Container Runtime Interface).
 * Kubernetes: Kubeadm, Kubectl, Kubelet.
 * BASH: script to provide Kubernetes, control-plane, and worker components.
+* WeaveNet CNI
 
 ## This section will describe: how to deploy the infrastructure on AWS.
 * Prequisite: Terraform is installed, and AWS CLI is installed and configured with keys.
@@ -34,9 +35,9 @@
   ```
   $ ssh ubuntu@$(terraform output -raw instance_public_ip_master) -i ssh_keys -v
   ```
-  NB: You can ssh to any worker node using the instance_public_ip_worker[*] - where [*] is the worker count.
+  
 * You should now be connected to the master node.
-* run the following commands to ensure all nodes in the cluster are available, and all essential Kubernetes control plane components have been created:
+* Run the following commands to ensure all nodes in the cluster are available, and all essential Kubernetes control plane components have      been created:
   ```
   ubuntu@master-node:~$ kubectl get nodes
   NAME            STATUS   ROLES           AGE   VERSION
